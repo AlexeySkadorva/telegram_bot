@@ -4,6 +4,8 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
+import java.io.IOException;
+
 /**
  * @author Alexey Skadorva
  */
@@ -17,11 +19,18 @@ class Bot extends TelegramLongPollingBot {
         Message msg = update.getMessage();
         String txt = msg.getText();
         if (txt.equals("/start")) {
-            sendMsg(msg, "Hello, world! This is simple bot!");
-        }
-
-        if (txt.equals("pidor")) {
-            sendMsg(msg, "Hello pidor");
+            sendMsg(msg, "Привет! Как тебя зовут");
+        } else {
+            if (txt.equals("/weather")) {
+                Weather weather = new Weather();
+                try {
+                    sendMsg(msg, weather.getTemperature());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                sendMsg(msg, "Правильно не " + txt + " a пееееееееееес! Сегодня накидаю тебе палок.");
+            }
         }
     }
 
